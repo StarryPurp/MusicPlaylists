@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                selectPause=false;
                 Mplayer.stop();
                 selectedMusicid=musiResid[i];
                 progress.setVisibility(View.INVISIBLE);
@@ -52,7 +53,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(selectPause) {
-                    Mplayer.start();
                     selectPause=false;//시작하고 ㄱㄱ~
                 }
                 else
@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         butStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                selectPause=false;
                 Mplayer.stop();
                 progress.setVisibility(View.INVISIBLE);
             }
