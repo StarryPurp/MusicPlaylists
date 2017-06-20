@@ -13,13 +13,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
     ListView listV;
-    Button butPlay,butStop;
+    Button butPlay,butStop,butPause;
     TextView textMusic;
     ProgressBar progress;
     String[] musicArray={"movie","sometime","secret"};
     int[] musiResid={R.raw.movie,R.raw.sometime,R.raw.secret};
     int selectedMusicid;
     MediaPlayer Mplayer;
+    boolean selectPause;
 
 
     @Override
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         listV=(ListView)findViewById(R.id.list_music);
         butPlay=(Button)findViewById(R.id.but_play);
         butStop=(Button)findViewById(R.id.but_stop);
+        butPause=(Button)findViewById(R.id.but_pause);
         textMusic=(TextView)findViewById(R.id.text_music);
         progress=(ProgressBar)findViewById(R.id.prograss_ing);
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_single_choice,musicArray);
@@ -40,22 +42,38 @@ public class MainActivity extends AppCompatActivity {
 
         listV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedMusicid=musiResid[position];
-
+            public void onItemClick(AdapterView<?> parent, View view, int i, long id) {
+                Mplayer.stop();
+                selectedMusicid=musiResid[i];
+                progress.setVisibility(View.INVISIBLE);
             }
         });
         butPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MediaPlayer.create(MainActivity.this,selectedMusicid);
+                if(selectPause) {
+                    Mplayer.start();
+                    selectPause=false;//시작하고 ㄱㄱ~
+                }
+                else
+                    Mplayer=MediaPlayer.create(MainActivity.this,selectedMusicid);
                 Mplayer.start();
+                progress.setVisibility(View.VISIBLE);
+            }
+        });
+        butPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selectPause=true;
+                Mplayer.pause();
+                progress.setVisibility(View.INVISIBLE);
             }
         });
         butStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Mplayer.stop();
+                progress.setVisibility(View.INVISIBLE);
             }
         });
     }
